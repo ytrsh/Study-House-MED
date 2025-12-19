@@ -11,6 +11,7 @@ interface TodoItemProps {
   onDragOver: (e: React.DragEvent, index: number) => void;
   onDragEnd: () => void;
   isDragging: boolean;
+  showMarks: boolean;
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ 
@@ -21,7 +22,8 @@ const TodoItem: React.FC<TodoItemProps> = ({
   onDragStart, 
   onDragOver, 
   onDragEnd,
-  isDragging 
+  isDragging,
+  showMarks
 }) => {
   return (
     <div 
@@ -45,14 +47,6 @@ const TodoItem: React.FC<TodoItemProps> = ({
             }`}>
               {task.title}
             </span>
-            <div className="flex gap-1">
-              {task.source === 'drive' && (
-                 <span className="text-[7px] sm:text-[8px] bg-emerald-500/10 text-emerald-500 px-1.5 sm:px-2 py-0.5 rounded-full border border-emerald-500/20 font-black uppercase tracking-widest shrink-0">Cloud</span>
-              )}
-              {task.source === 'ai' && (
-                 <span className="text-[7px] sm:text-[8px] bg-indigo-500/10 text-indigo-500 px-1.5 sm:px-2 py-0.5 rounded-full border border-indigo-500/20 font-black uppercase tracking-widest shrink-0">AI</span>
-              )}
-            </div>
           </div>
           {task.category && (
             <span className="text-[8px] sm:text-[9px] uppercase tracking-widest font-black text-slate-600 mt-0.5 sm:mt-1 truncate">
@@ -63,32 +57,34 @@ const TodoItem: React.FC<TodoItemProps> = ({
       </div>
       
       <div className="flex items-center gap-1 sm:gap-4 shrink-0">
-        <div className="flex items-center gap-0.5 sm:gap-2 px-1 sm:px-4 border-x border-slate-800/50">
-          <button 
-            onClick={() => onToggle(task.id, 'completed')}
-            className={`transition-all p-1.5 sm:p-2 rounded-lg hover:bg-white/5 active:scale-90 ${task.completed ? 'text-emerald-500' : 'text-slate-600'}`}
-          >
-            <svg className="w-4 h-4 sm:w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-            </svg>
-          </button>
+        {showMarks && (
+            <div className="flex items-center gap-0.5 sm:gap-2 px-1 sm:px-4 border-x border-slate-800/50">
+                <button 
+                    onClick={() => onToggle(task.id, 'completed')}
+                    className={`transition-all p-1.5 sm:p-2 rounded-lg hover:bg-white/5 active:scale-90 ${task.completed ? 'text-emerald-500' : 'text-slate-600'}`}
+                >
+                    <svg className="w-4 h-4 sm:w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                    </svg>
+                </button>
 
-          <button 
-            onClick={() => onToggle(task.id, 'isUrgent')}
-            className={`transition-all p-1.5 sm:p-2 rounded-lg hover:bg-white/5 active:scale-90 ${task.isUrgent ? 'text-rose-500' : 'text-slate-600'}`}
-          >
-            <svg className="w-4 h-4 sm:w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </button>
+                <button 
+                    onClick={() => onToggle(task.id, 'isUrgent')}
+                    className={`transition-all p-1.5 sm:p-2 rounded-lg hover:bg-white/5 active:scale-90 ${task.isUrgent ? 'text-rose-500' : 'text-slate-600'}`}
+                >
+                    <svg className="w-4 h-4 sm:w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </button>
 
-          <button 
-            onClick={() => onToggle(task.id, 'isQuestion')}
-            className={`transition-all p-1.5 sm:p-2 rounded-lg hover:bg-white/5 active:scale-90 font-black text-xs sm:text-base select-none ${task.isQuestion ? 'text-blue-500' : 'text-slate-600'}`}
-          >
-            ?
-          </button>
-        </div>
+                <button 
+                    onClick={() => onToggle(task.id, 'isQuestion')}
+                    className={`transition-all p-1.5 sm:p-2 rounded-lg hover:bg-white/5 active:scale-90 font-black text-xs sm:text-base select-none ${task.isQuestion ? 'text-blue-500' : 'text-slate-600'}`}
+                >
+                    ?
+                </button>
+            </div>
+        )}
 
         <button 
           onClick={() => onDelete(task.id)}

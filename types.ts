@@ -10,9 +10,10 @@ export interface TodoTask {
   category?: string;
   createdAt: number;
   // Spaced Repetition Fields
-  repetitionLevel: number; // 0, 1, 2, 3, 4, 5...
+  repetitionLevel: number; // 0 (New) -> 5 (Mastered)
   lastReviewedAt?: number;
-  nextReviewAt?: number; // Timestamp for when the task is due for study
+  nextReviewAt?: number; // Calculated or manual timestamp for review
+  manualDate?: string; // YYYY-MM-DD for user overrides in Plan
 }
 
 export interface GeminiParsedTask {
@@ -20,7 +21,7 @@ export interface GeminiParsedTask {
   category?: string;
 }
 
-export interface DailyStat {
-  date: string; // YYYY-MM-DD
-  count: number;
+export interface StudyPlanConfig {
+  startDate: string; // YYYY-MM-DD
+  targetEndDate: string; // YYYY-MM-DD
 }
